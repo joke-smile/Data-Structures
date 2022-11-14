@@ -660,7 +660,6 @@ void Task1158()
 //Выбор задания.
 int main() 
 {
-	//TODO: разобрать
 	srand(time(nullptr));
 	setlocale(0, "");
 	int choice = 0;

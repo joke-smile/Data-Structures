@@ -26,13 +26,17 @@ void Menu()
 
 void CoutList(List* list)
 {
-	List* temp;
+	List* temp = new List;
 	temp = list;
-	cout << list->field << " ";
-	while (temp->prev != NULL)
+	while (list->prev != NULL)
 	{
-		cout << temp->prev->field << " ";
-		temp = temp->prev;
+		temp = list->prev;
+	}
+	cout << temp->field << " ";
+	while (list->next != NULL)
+	{
+		cout << list->field << " ";
+		list = list->next;
 	}
 	cout << endl;
 }
@@ -63,26 +67,22 @@ List* InitializeList(int a)
 	return(list);
 }
 
-List* AddElement(List* list, int number)
+List* AddElement(List* list, int value)
 {
-	struct List *temp, *p;
-	temp = (struct List*)malloc(sizeof(struct List));
-	p = list->next;
+	struct List* temp = new List();
+
 	list->next = temp;
-	temp->field = number;
-	temp->next = p;
+	temp->field = value;
+	temp->next = NULL;
 	temp->prev = list;
-	if (p != NULL)
-	{
-		p->prev = temp;
-	}
 	return temp;
 }
 
 int main()
 {
-	List* list = InitializeList(1);
 	setlocale(0, "");
+	List* list = new List;
+	List* headList = new List;
 	while (true)
 	{
 		int choice;
@@ -97,7 +97,7 @@ int main()
 			}
 			case 1:
 			{
-				InitializeList(5);
+				InitializeList(NULL);
 				break;
 			}
 			case 2:

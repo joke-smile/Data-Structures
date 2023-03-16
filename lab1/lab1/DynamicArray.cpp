@@ -1,55 +1,45 @@
 #include "DynamicArray.h"
-#include <iostream>
 
 using namespace std;
 
+const int growFactory = 2;
+
 void ResizeDynamicArray(DynamicArray* arrayInfo)
 {
-	if (arrayInfo->Length >= arrayInfo->Capacity)
-	{
-		arrayInfo->Capacity += arrayInfo->ConstCapacity;
-
-		int* tempArrayInfo = new int[arrayInfo->Capacity];
-
-		for (int i = 0; i < arrayInfo->Length; i++)
-		{
-			tempArrayInfo[i] = arrayInfo->Array[i];
-		}
-
-		delete[] arrayInfo->Array;
-		arrayInfo->Array = new int[arrayInfo->Capacity];
-		for (int i = 0; i < arrayInfo->Length; i++)
-		{
-			arrayInfo->Array[i] = tempArrayInfo[i];
-		}
-		delete[] tempArrayInfo;
-	}
+	arrayInfo->Capacity *= growFactory;
+	UpdateArray(arrayInfo);
 }
 
 void ReductionDynamicArray(DynamicArray* arrayInfo)
 {
-	if ((arrayInfo->Capacity - arrayInfo->Length) > arrayInfo->ConstCapacity)
+	arrayInfo->Capacity /= growFactory;
+	UpdateArray(arrayInfo);
+}
+
+void UpdateArray(DynamicArray* arrayInfo)
+{
+	int* tempArrayInfo = new int[arrayInfo->Capacity];
+	for (int i = 0; i < arrayInfo->Length; i++)
 	{
-		int* tempArrayInfo = new int[arrayInfo->Length];
-		for (int i = 0; i < arrayInfo->Length; i++)
-		{
-			tempArrayInfo[i] = arrayInfo->Array[i];
-		}
-		arrayInfo->Capacity -= arrayInfo->ConstCapacity;
-		delete[] arrayInfo->Array;
-		arrayInfo->Array = new int[arrayInfo->Capacity];
-		for (int i = 0; i < arrayInfo->Length; i++)
-		{
-			arrayInfo->Array[i] = tempArrayInfo[i];
-		}
-		delete[] tempArrayInfo;
+		tempArrayInfo[i] = arrayInfo->Array[i];
 	}
+	delete[] arrayInfo->Array;
+	arrayInfo->Array = new int[arrayInfo->Capacity];
+	for (int i = 0; i < arrayInfo->Length; i++)
+	{
+		arrayInfo->Array[i] = tempArrayInfo[i];
+	}
+	delete[] tempArrayInfo;
 }
 
 void AddInArray(DynamicArray* arrayInfo, int element)
 {
-	ResizeDynamicArray(arrayInfo);
 	arrayInfo->Length++;
+	if (arrayInfo->Length >= arrayInfo->Capacity)
+	{
+		ResizeDynamicArray(arrayInfo);
+	}
+	ResizeDynamicArray(arrayInfo);
 	arrayInfo->Array[arrayInfo->Length - 1] = element;
 }
 
@@ -72,8 +62,12 @@ void SortingArray(DynamicArray* arrayInfo)
 
 void AddInStartingOfArray(DynamicArray* arrayInfo, int element)
 {
-	ResizeDynamicArray(arrayInfo);
 	arrayInfo->Length++;
+	if (arrayInfo->Length >= arrayInfo->Capacity)
+	{
+		ResizeDynamicArray(arrayInfo);
+	}
+
 	for (int i = arrayInfo->Length - 1; i - 1 >= 0; i--)
 	{
 		arrayInfo->Array[i] = arrayInfo->Array[i - 1];
@@ -83,25 +77,25 @@ void AddInStartingOfArray(DynamicArray* arrayInfo, int element)
 
 bool RemoveElement(DynamicArray* arrayInfo, int element)
 {
+	int index = FindElementInArray(arrayInfo, element);
 	bool flag = false;
-	int index = 0;
-	for (int i = 0; i < arrayInfo->Length; i++)
+	if (index == arrayInfo->Length)
 	{
-		if (element == arrayInfo->Array[i])
-		{
-			index = i;
-			flag = true;
-			for (int i = index; i < arrayInfo->Length; i++)
-			{
-				if (i + 1 < arrayInfo->Length)
-				{
-					arrayInfo->Array[i] = arrayInfo->Array[i + 1];
-				}
-			}
-			arrayInfo->Length--;
-			return flag;
-		}
+		return flag;
 	}
+	else
+	{
+		flag = true;
+		for (int i = index; i < arrayInfo->Length; i++)
+		{
+			if (i + 1 < arrayInfo->Length)
+			{
+				arrayInfo->Array[i] = arrayInfo->Array[i + 1];
+			}
+		}
+		arrayInfo->Length--;
+	}
+
 	ReductionDynamicArray(arrayInfo);
 	return flag;
 }

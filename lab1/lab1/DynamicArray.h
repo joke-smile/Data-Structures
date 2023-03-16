@@ -1,3 +1,4 @@
+#pragma once
 /**
  *	@brief Структура, которая содержит поля динамического массива.
 */
@@ -8,6 +9,8 @@ struct DynamicArray
 	int Capacity = ConstCapacity;
 	int* Array = new int[Length + Capacity];
 };
+
+void UpdateArray(DynamicArray* arrayInfo);
 
 /**
  *	@brief Метод для увеличения буфера динамического массива при его заполнении.
@@ -74,9 +77,3 @@ int FindElementInArray(DynamicArray* arrayInfo, int element);
  * @param arrayInfo - Динамический массив.
 */
 void ReInitializeDynamicArray(DynamicArray* arrayInfo);
-
-/**
- * @brief Метод для уменьшения буфера.
- * @param arrayInfo - Динамический массив.
-*/
-void ReductionDynamicArray(DynamicArray* arrayInfo);

@@ -141,9 +141,11 @@
   <ItemGroup>
     <ClCompile Include="DynamicArray.cpp" />
     <ClCompile Include="lab1.cpp" />
+    <ClCompile Include="Services.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DynamicArray.h" />
+    <ClInclude Include="Services.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
